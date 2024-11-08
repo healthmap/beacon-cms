@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  strapi-postgres-db:
+    container_name: strapi-postgres
+    restart: always
+    env_file: .env
+    image: postgres:16.3-alpine
+    volumes:
+      - strapi-data:/var/lib/postgresql/data/ # Persistent named data volume for PostgreSQL
+    ports:
+      - "5432:5432"
+    networks:
+      - strapi
+
+  strapi-server:
+    container_name: strapi-app
+    build:
+      context: . 
+      dockerfile: Dockerfile.dev
+    image: strapi-app:latest
+    restart: always
+    env_file: .env
+    volumes:
+      - ./:/opt/strapi-app/
+      # Mount an anonymous persistent volume to node_modules to prevent host overriding it
+      # Use docker-compose --renew-anon-volumes (Recreate anonymous volumes instead of retrieving data from the previous containers)
+      # Without this,  if you added a new package and rebuilt your image it would be using the node_modules from your initial docker-compose launch.
+      - /opt/strapi-app/node_modules/
+    ports:
+      - "1337:1337"
+    networks:
+      - strapi
+    depends_on:
+      - strapi-postgres-db
+
+volumes:
+  strapi-data: 
+
+networks:
+  strapi:
+    name: Strapi
+    driver: bridge

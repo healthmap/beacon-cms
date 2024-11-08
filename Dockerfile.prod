@@ -1,0 +1,15 @@
+FROM node:20-alpine3.19
+# Installing zlib (compression library), libpng (for working with png images), (libvips-dev for processing large images)
+RUN apk update && apk add --no-cache build-base gcc autoconf automake zlib-dev libpng-dev nasm bash vips-dev git
+ENV NODE_ENV=production
+
+WORKDIR /opt/strapi-app
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev
+ENV PATH=/opt/strapi-app/node_modules/.bin:$PATH
+COPY . .
+RUN chown -R node:node /opt/strapi-app
+USER node
+RUN npm run build
+EXPOSE 1337
+CMD ["npm", "run", "start"]

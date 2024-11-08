@@ -1,61 +1,46 @@
-# 🚀 Getting started with Strapi
+# beacon-content-manager-intneral
 
-Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/dev-docs/cli) (CLI) which lets you scaffold and manage your project in seconds.
+## Content Management - STRAPI
 
-### `develop`
+### Postgres
 
-Start your Strapi application with autoReload enabled. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-develop)
+* Install Postgres on your machine (If you haven't already)
+* Run `psql postgres`
+* Run `\du` to display the list of users
+* You can create a user here and use the newly created user while setting up Strapi or go with default 'postgres' user
+* Run `Create database beaconcms;` to create a database
+* RUN `Grant all privileges on database beaconcms to postgres;`
 
-```
-npm run develop
-# or
-yarn develop
-```
-
-### `start`
-
-Start your Strapi application with autoReload disabled. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-start)
+* If you are running the project on Docker, please create a user, database and grant privileges using the following...
 
 ```
-npm run start
-# or
-yarn start
-```
-
-### `build`
-
-Build your admin panel. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-build)
+    CREATE USER postgres;
+    CREATE DATABASE beaconcms;
+    GRANT ALL PRIVILEGES ON DATABASE beaconcms TO postgres;
 
 ```
-npm run build
-# or
-yarn build
-```
 
-## ⚙️ Deployment
+### Strapi setup
+* Make sure the NODE version is up-to-date
+* Run `nvm list`
+* You should see the list of NODE versions (If you manage Node using NVM)
 
-Strapi gives you many possible deployment options for your project including [Strapi Cloud](https://cloud.strapi.io). Browse the [deployment section of the documentation](https://docs.strapi.io/dev-docs/deployment) to find the best solution for your use case.
+   ![](./beaconcms/images/nvmlist.png)
 
-```
-yarn strapi deploy
-```
+* NOTE: Strapi can ONLY be installed within an EMPTY folder
+* Run `npm create strapi-app beaconcms`
 
-## 📚 Learn more
+   ![](./beaconcms/images/strapi_setup_1.png)
 
-- [Resource center](https://strapi.io/resource-center) - Strapi resource center.
-- [Strapi documentation](https://docs.strapi.io) - Official Strapi documentation.
-- [Strapi tutorials](https://strapi.io/tutorials) - List of tutorials made by the core team and the community.
-- [Strapi blog](https://strapi.io/blog) - Official Strapi blog containing articles made by the Strapi team and the community.
-- [Changelog](https://strapi.io/changelog) - Find out about the Strapi product updates, new features and general improvements.
+* Above assumes that we chose Postgres instead of standard SQLITE DB that comes with Strapi
+* You can SKIP the login or setup an account via the terminal itself
+* Once the above is done, run `npm run develop`
 
-Feel free to check out the [Strapi GitHub repository](https://github.com/strapi/strapi). Your feedback and contributions are welcome!
+   ![](./beaconcms/images/strapi_setup_2.png)
 
-## ✨ Community
+* 
 
-- [Discord](https://discord.strapi.io) - Come chat with the Strapi community including the core team.
-- [Forum](https://forum.strapi.io/) - Place to discuss, ask questions and find answers, show your Strapi project and get feedback or just talk with other Community members.
-- [Awesome Strapi](https://github.com/strapi/awesome-strapi) - A curated list of awesome things related to Strapi.
-
----
-
-<sub>🤫 Psst! [Strapi is hiring](https://strapi.io/careers).</sub>
+### Access Strapi Swagger documentation
+* Navigate to `http://localhost:1337/documentation/v1.0.0#/`
+* You will see the swagger documentation
+* Note: for this to work, we would need to install a plugin -> `npm install @strapi/plugin-documentation`
